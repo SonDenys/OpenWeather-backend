@@ -15,7 +15,8 @@
     <script>
       window
         .fetch(
-          "https://api.openweathermap.org/data/2.5/weather&appid=d3fc4dc2bba44853d4ba6bcf3abb2296"
+          `https://api.openweathermap.org/data/2.5/weather?q=Paris&appid=17304dd6384ae9418f6afd8506993ead`
+          // `https://api.openweathermap.org/data/2.5/forecast?lat=44.34&lon=10.99&lang=fr&appid=17304dd6384ae9418f6afd8506993ead`
         )
         .then((res) => res.json())
         .then((resJson) => console.log(resJson));
