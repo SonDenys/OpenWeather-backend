@@ -18,6 +18,9 @@ mongoose.connect(process.env.MONGODB_URI, {
 const citiesRoutes = require("./routes/city");
 app.use(citiesRoutes);
 
+const favoritesRoutes = require("./routes/favorites");
+app.use(favoritesRoutes);
+
 app.all("*", (req, res) => {
   res.status(404).json({ message: "Page not found !" });
 });
@@ -25,3 +28,5 @@ app.all("*", (req, res) => {
 app.listen(process.env.PORT, () => {
   console.log("Server Started");
 });
+
+module.exports = app;
