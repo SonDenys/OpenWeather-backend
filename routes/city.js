@@ -129,14 +129,14 @@ router.get("/chooseNextTrip", async (req, res) => {
           ? {
               city: cityInputValue1,
               score: cityScore.scoreCity1,
-              temp: cityForecast1.list[0].main.temp,
+              temp: cityForecast1.list[0].main.temp - 273.15,
               humidity: cityForecast1.list[0].main.humidity,
               clouds: cityForecast1.list[0].clouds.all,
             }
           : {
               city: cityInputValue2,
               score: cityScore.scoreCity2,
-              temp: cityForecast2.list[0].main.temp,
+              temp: cityForecast2.list[0].main.temp - 273.15,
               humidity: cityForecast2.list[0].main.humidity,
               clouds: cityForecast2.list[0].clouds.all,
             };
