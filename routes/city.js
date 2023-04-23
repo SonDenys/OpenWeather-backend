@@ -126,8 +126,20 @@ router.get("/chooseNextTrip", async (req, res) => {
       // Compare les scores de chaque ville et renvoie celle avec le score le plus élevé.
       const result =
         cityScore.scoreCity1 > cityScore.scoreCity2
-          ? { city: cityInputValue1, score: cityScore.scoreCity1 }
-          : { city: cityInputValue2, score: cityScore.scoreCity2 };
+          ? {
+              city: cityInputValue1,
+              score: cityScore.scoreCity1,
+              temp: cityForecast1.list[0].main.temp,
+              humidity: cityForecast1.list[0].main.humidity,
+              clouds: cityForecast1.list[0].clouds.all,
+            }
+          : {
+              city: cityInputValue2,
+              score: cityScore.scoreCity2,
+              temp: cityForecast2.list[0].main.temp,
+              humidity: cityForecast2.list[0].main.humidity,
+              clouds: cityForecast2.list[0].clouds.all,
+            };
 
       // Envoie un message JSON avec la ville sélectionnée et son score.
       res.status(200).json(result);
