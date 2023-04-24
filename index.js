@@ -21,6 +21,9 @@ app.use(citiesRoutes);
 const favoritesRoutes = require("./routes/favorites");
 app.use(favoritesRoutes);
 
+const autoCompleteRoutes = require("./routes/autoComplete");
+app.use(autoCompleteRoutes);
+
 app.all("*", (req, res) => {
   res.status(404).json({ message: "Page not found !" });
 });

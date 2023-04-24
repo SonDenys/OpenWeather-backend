@@ -13,14 +13,14 @@ const optimalCloudiness = 15;
 
 // Fonction pour récupérer les données météo actuelles pour une ville donnée
 const getWeatherData = async (city_name) => {
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city_name}&lang=fr&appid=17304dd6384ae9418f6afd8506993ead`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city_name}&lang=fr&appid=${APP_KEY}`;
   const response = await axios.get(url);
   return response.data;
 };
 
 // Fonction pour récupérer les prévisions météo pour une ville donnée
 const getForecastData = async (lat, lon) => {
-  const url = `https://api.openweathermap.org/data/2.5/forecast?&lon=${lon}&lat=${lat}&lang=fr&cnt=1&appid=17304dd6384ae9418f6afd8506993ead`;
+  const url = `https://api.openweathermap.org/data/2.5/forecast?&lon=${lon}&lat=${lat}&lang=fr&cnt=1&appid=${APP_KEY}`;
   const response = await axios.get(url);
   return response.data;
 };
