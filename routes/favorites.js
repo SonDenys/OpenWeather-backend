@@ -17,6 +17,9 @@ router.post("/favorites/add", async (req, res) => {
         // owner: req.fields.userId,
         cityName: req.fields.cityName,
         cityId: req.fields.cityId,
+        temperature: req.fields.temperature,
+        humidity: req.fields.humidity,
+        clouds: req.fields.clouds,
       });
 
       await newFavorites.save();

@@ -5,8 +5,11 @@ const mongoose = require("mongoose");
 const Favorites = mongoose.model(
   "Favorites",
   {
-    cityName: { type: String, unique: true, sparse: true },
+    cityName: { type: String, unique: true, sparse: true, required: true },
     cityId: { type: Number, unique: true, sparse: true },
+    temperature: { type: Number },
+    humidity: { type: Number },
+    clouds: { type: Number },
   }
   //   // Link the type and the Favorites
   //   owner: {
