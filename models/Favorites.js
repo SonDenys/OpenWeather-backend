@@ -10,6 +10,7 @@ const Favorites = mongoose.model(
     temperature: { type: Number },
     humidity: { type: Number },
     clouds: { type: Number },
+    score: { type: Number },
   }
   //   // Link the type and the Favorites
   //   owner: {
