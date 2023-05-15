@@ -2,9 +2,9 @@
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
+const { config } = require("../config/config.js");
 
-// Définition de la clé d'API pour OpenWeatherMap
-const APP_KEY = process.env.APP_KEY;
+const APP_KEY = config();
 
 // Définition des données météorologiques attendues
 const optimalTemp = 27;
@@ -60,28 +60,28 @@ function getDatasDiff(forecastData) {
 }
 
 // Fonction qui calcule le score d'une ville en fonction des différences entre les données météorologiques attendues et réelles.
-function getScore(cityDatas1, cityDatas2) {
-  let scoreCity1 = 0;
-  let scoreCity2 = 0;
+function getScore(city1, city2) {
+  const scores = { scoreCity1: 0, scoreCity2: 0 };
 
-  if (cityDatas1[0] > cityDatas2[0]) {
-    scoreCity2 += 20;
+  if (city1.temperature > city2.temperature) {
+    scores.scoreCity2 += 20;
   } else {
-    scoreCity1 += 20;
+    scores.scoreCity1 += 20;
   }
 
-  if (cityDatas1[1] > cityDatas2[1]) {
-    scoreCity2 += 15;
+  if (city1.humidity > city2.humidity) {
+    scores.scoreCity2 += 15;
   } else {
-    scoreCity1 += 15;
-  }
-  if (cityDatas1[2] > cityDatas2[2]) {
-    scoreCity2 += 10;
-  } else {
-    scoreCity1 += 10;
+    scores.scoreCity1 += 15;
   }
 
-  return { scoreCity1, scoreCity2 };
+  if (city1.cloudiness > city2.cloudiness) {
+    scores.scoreCity2 += 10;
+  } else {
+    scores.scoreCity1 += 10;
+  }
+
+  return scores;
 }
 
 // Définition de la route /chooseNextTrip et traitement de la requête GET
@@ -90,7 +90,7 @@ router.get("/chooseNextTrip", async (req, res) => {
   const cityInputValue2 = req.query.city2;
 
   if (!cityInputValue1 || !cityInputValue2) {
-    res.status(500).json({ message: "Au moins une ville est manquante" });
+    res.status(400).json({ message: "Au moins une ville est manquante" });
   } else {
     try {
       // Attente des appels asynchrones pour récupérer les données météorologiques des deux villes
@@ -109,19 +109,14 @@ router.get("/chooseNextTrip", async (req, res) => {
       // console.log("cityForecast2 ==", cityForecast2.list);
 
       // Attente des appels asynchrones pour calculer la différence des données entre les prévisions et les données attendues de chaque ville.
-      const [cityDatasDiff1, cityDatasDiff2] = await Promise.all([
-        getDatasDiff(cityForecast1),
-        getDatasDiff(cityForecast2),
-      ]);
+      const cityDatasDiff1 = getDatasDiff(cityForecast1);
+      const cityDatasDiff2 = getDatasDiff(cityForecast2);
 
       // console.log("cityDatasDiff1 ==", cityDatasDiff1);
       // console.log("cityDatasDiff2 ==", cityDatasDiff2);
 
       // Calcul le score de chaque ville à partir des données différences des prévisions.
       const cityScore = getScore(cityDatasDiff1, cityDatasDiff2);
-
-      // console.log("cityScore1 ==", cityScore.scoreCity1);
-      // console.log("cityScore2 ==", cityScore.scoreCity2);
 
       // Compare les scores de chaque ville et renvoie celle avec le score le plus élevé.
       const result =
